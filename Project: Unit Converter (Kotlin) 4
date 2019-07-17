@@ -1,0 +1,77 @@
+package converter
+
+import java.util.*
+
+enum class Measure(val shortNameOfMetric: String, val fullNameOfMetric: String, val pluralNameOfMetric: String, val coefficientNum: Double){
+    METER("m", "meter", "meters", 1.0),
+    KILOMETER("km","kilometer","kilometers", 1000.0),
+    CENTIMETER("cm","centimeter","centimeters", 0.01),
+    MILLIMETER("mm","millimeter","millimeters", 0.001),
+    MILE("mi","mile","miles", 1609.35),
+    YARD("yd","yard","yards", 0.9144),
+    FOOT("ft","foot","feet", 0.3048),
+    INCH("in","inch","inches", 0.0254),
+    GRAM("g", "gram", "grams", 1.0),
+    KILOGRAM("kg", "kilogram", "kilograms", 1000.0),
+    MILLIGRAM("mg", "milligram", "milligrams", 0.001),
+    POUND("lb", "pound", "pounds", 453.592),
+    OUNCE("oz", "ounce", "ounces", 28.3495),
+    NULL("", "", "", 1.0)
+}
+
+
+fun main(args: Array<String>) {
+    val sc = Scanner(System.`in`)
+    do{
+
+        print("Enter what you want to convert (or exit): ")
+        var inputAny = sc.next()
+        var input: Double
+        if(checkInput(inputAny)){
+            break;
+        } else {
+            input = inputAny.toDouble()
+        }
+
+        var inputMetric = sc.next()
+        var to = sc.next()
+        var toInputMetric = sc.next()
+        var convertNum = isMetric(inputMetric)
+        var toConvertNum = isMetric(toInputMetric)
+
+        var nameOfMetric = isPlural(input, convertNum)
+        var res = (input * convertNum.coefficientNum) / toConvertNum.coefficientNum
+        var nameOfConvertMetric = isPlural(res, toConvertNum)
+
+        print("$input $nameOfMetric is $res $nameOfConvertMetric\n")
+    } while (true)
+}
+
+fun checkInput(input: String): Boolean{
+    return input == "exit"
+}
+
+fun isMetric(inputMetric: String): Measure {
+    var res = when(inputMetric.toLowerCase()){
+        "m", "meter", "meters" -> Measure.METER
+        "km","kilometer","kilometers" -> Measure.KILOMETER
+        "cm","centimeter","centimeters" -> Measure.CENTIMETER
+        "mm","millimeter","millimeters" -> Measure.MILLIMETER
+        "mi","mile","miles" -> Measure.MILE
+        "yd","yard","yards" -> Measure.YARD
+        "ft","foot","feet" -> Measure.FOOT
+        "in","inch","inches" -> Measure.INCH
+        "g", "gram", "grams" -> Measure.GRAM
+        "kg", "kilogram", "kilograms" -> Measure.KILOGRAM
+        "mg", "milligram", "milligrams" -> Measure.MILLIGRAM
+        "lb", "pound", "pounds" -> Measure.POUND
+        "oz", "ounce", "ounces" -> Measure.OUNCE
+        else -> Measure.NULL
+    }
+    return res
+}
+
+fun isPlural(num: Double, metric: Measure): String {
+    val res = if (num == 1.0) metric.fullNameOfMetric else metric.pluralNameOfMetric
+    return res
+}
