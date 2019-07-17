@@ -23,7 +23,6 @@ enum class Measure(val shortNameOfMetric: String, val fullNameOfMetric: String, 
 fun main(args: Array<String>) {
     val sc = Scanner(System.`in`)
     do{
-
         print("Enter what you want to convert (or exit): ")
         var inputAny = sc.next()
         var input: Double
